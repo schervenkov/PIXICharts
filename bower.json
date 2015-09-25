@@ -1,0 +1,29 @@
+{
+  "name": "PIXICharts",
+  "version": "0.0.1",
+  "description": "Chart classes for PIXI.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "pixi.js",
+    "pixi",
+    "chart",
+    "pie",
+    "chart",
+    "bar",
+    "chart"
+  ],
+  "authors": [
+    "Stanislav Chervenkov"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/chalgoman/PIXICharts",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
