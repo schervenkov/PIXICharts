@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PIXICharts</title>
+	<script type="text/javascript" src="pixi/pixi.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.0/randomColor.min.js"></script>
+	<script type="text/javascript" src="src/Utils.js"></script>
+	<script type="text/javascript" src="src/PieChart.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+	var renderer = PIXI.autoDetectRenderer(800, 600, { transparent: true, antialias: true });
+	document.body.appendChild(renderer.view);
+
+	var stage = new PIXI.Container();
+	(function loop(){ renderer.render(stage); requestAnimationFrame(loop); })();
+
+	var chart = new PIXICharts.Pie();
+
+	stage.addChild(chart);
+
+	chart
+		.setData('data1', 20)
+		.setData('data2', 50)
+		.setData('data3', 80)
+</script>
+</body>
+</html>
