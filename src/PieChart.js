@@ -11,9 +11,11 @@
 			showValues: true,
 			legend: true,
 			firstSectorAngle: 0,
-			backgroundColor: false,
+			backgroundColor: null,
 			legendPosition: 'right',
 			offset: 10,
+			chartTitle: null,
+			legendTitle: null,
 			legendBackgroundColor: 0xAAAAAA,
 			legendWidth: 40 // percents
 		});
@@ -43,7 +45,7 @@
 		// auto chart position
 		if (!this.config.position) {
 			this.config.position = {
-				x: this.config.radius + this.config.offset,
+				x: (this.config.width - this.legendSize.width) / 2,
 				y: this.config.height / 2
 			};
 		}
@@ -72,15 +74,15 @@
 						.endFill()
 				);
 			}
-		}
 
-		// reposition legend and chart
-		if ( this.config.legendPosition == 'left' ) {
-			this.legend.position.set(0, 0);
-			this.chartContainer.position.set( this.legendSize.width, 0 );
-		} else { // right
-			this.legend.position.set(this.config.width - this.legendSize.width, 0);
-			this.chartContainer.position.set( 0, 0 );
+			// reposition legend and chart
+			if ( this.config.legendPosition == 'left' ) {
+				this.legend.position.set(0, 0);
+				this.chartContainer.position.set( this.legendSize.width, 0 );
+			} else { // right
+				this.legend.position.set(this.config.width - this.legendSize.width, 0);
+				this.chartContainer.position.set( 0, 0 );
+			}
 		}
 	};
 
