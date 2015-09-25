@@ -130,7 +130,7 @@
 			return endAngle;
 		},
 
-		// draws the value (if needed) in the center of the three given points
+		// draws the value (if needed) at given point
 		_drawValue: function( key, position ) {
 			if (!this.config.showValues && !this.config.showLabels) return;
 			var textParts = [];
