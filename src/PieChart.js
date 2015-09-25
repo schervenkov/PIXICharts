@@ -2,27 +2,85 @@
 	var PieChart = function( config ) {
 		PIXI.Container.call(this);
 
+		// extend the config with default options
 		this.config = charts.extend(config || {}, {
 			width: 340,
 			height: 200,
 			autoRedraw: true,
 			showLabels: true,
 			showValues: true,
-			legend: false,
-			radius: 60,
-			position: [100, 100],
-			firstSectorAngle: 0
+			legend: true,
+			firstSectorAngle: 0,
+			backgroundColor: false,
+			legendPosition: 'right',
+			offset: 10,
+			legendBackgroundColor: 0xAAAAAA,
+			legendWidth: 40 // percents
 		});
 
 		this.labels = {};
 		this.colors = {};
 		this.data = {};
 
+		// calculate legend size
+		if ( this.config.legend ) {
+			this.legendSize = {
+				width: this.config.width * (this.config.legendWidth / 100),
+				height: this.config.height
+			};
+		} else { // if there's no legend - set size to 0x0
+			this.legendSize = {
+				width: 0,
+				height: 0
+			};
+		}
+
+		// auto radius calculation
+		if (!this.config.radius) {
+			this.config.radius = (Math.min(this.config.width - this.legendSize.width, this.config.height) / 2) - this.config.offset;
+		}
+
+		// auto chart position
+		if (!this.config.position) {
+			this.config.position = {
+				x: this.config.radius + this.config.offset,
+				y: this.config.height / 2
+			};
+		}
+
+		// getColor util
 		this.getColor = charts.colors();
 
-		this.chart = this.addChild(new PIXI.Graphics());
+		// background element
+		this.background = this.addChild( new PIXI.Graphics() );
+		this.setBackgroundColor( this.config.backgroundColor );
+
+		// chreate chart container
+		this.chartContainer = this.addChild(new PIXI.Container());
+		this.chart = this.chartContainer.addChild(new PIXI.Graphics);
+
 		if ( this.config.legend ) {
-			this.legend = this.addChild(new PIXI.Container());
+			// create legend container
+			this.legend = this.addChild( new PIXI.Container() );
+
+			// set legend background
+			if (this.config.legendBackgroundColor) {
+				this.legend.addChild(
+					new PIXI.Graphics()
+						.beginFill(this.config.legendBackgroundColor)
+						.drawRect(0, 0, this.legendSize.width, this.legendSize.height)
+						.endFill()
+				);
+			}
+		}
+
+		// reposition legend and chart
+		if ( this.config.legendPosition == 'left' ) {
+			this.legend.position.set(0, 0);
+			this.chartContainer.position.set( this.legendSize.width, 0 );
+		} else { // right
+			this.legend.position.set(this.config.width - this.legendSize.width, 0);
+			this.chartContainer.position.set( 0, 0 );
 		}
 	};
 
@@ -35,8 +93,8 @@
 
 		_drawSector: function( startAngle, percent, color ) {
 			var endAngle	= 360 * (percent / 100) + startAngle,
-				centerX 	= this.config.position[0],
-				centerY 	= this.config.position[1],
+				centerX 	= this.config.position.x,
+				centerY 	= this.config.position.y,
 				radius		= this.config.radius;
 
 			startAngle = this._angle(startAngle);
@@ -53,6 +111,20 @@
 					.endFill();
 
 			return endAngle;
+		},
+
+		setBackgroundColor: function( color ) {
+			this.background.clear();
+			if (!color) {
+				return this;
+			}
+
+			this.background
+					.beginFill(color)
+					.drawRect(0, 0, this.config.width, this.config.height)
+					.endFill();
+
+			return this;
 		},
 
 		setColor: function( key, color ) {

@@ -14,9 +14,13 @@
 	var stage = new PIXI.Container();
 	(function loop(){ renderer.render(stage); requestAnimationFrame(loop); })();
 
-	var chart = new PIXICharts.Pie();
+	var chart = new PIXICharts.Pie({
+		backgroundColor: 0xEEEEEE
+	});
 
 	stage.addChild(chart);
+
+	chart.position.set(100, 150);
 
 	chart
 		.setData('data1', 20)
