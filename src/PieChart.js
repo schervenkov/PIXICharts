@@ -93,7 +93,7 @@
 				if (!this.colors[key]) {
 					this.setColor(key, this.getColor());
 				}
-				nextSectorStartAngle = this._drawSector(nextSectorStartAngle, Math.round((this.data[key] / total) * 100), this.colors[key]);
+				nextSectorStartAngle = this._drawSector(nextSectorStartAngle, (this.data[key] / total) * 100, this.colors[key]);
 			}
 		}
 	});
