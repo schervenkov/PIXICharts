@@ -63,6 +63,8 @@
 		this.chartContainer = this.addChild(new PIXI.Container());
 		this.chart = this.chartContainer.addChild(new PIXI.Graphics);
 
+		this.tempChildren = [];
+
 		if ( this.config.legend ) {
 			// create legend container
 			this.legend = this.addChild( new PIXI.Container() );
@@ -141,11 +143,28 @@
 				textParts.push( this.config.valueFormat(this.data[key]) );
 			}
 
-			var text = this.chartContainer.addChild(new PIXI.Text( textParts.join(' '), {
-				font: '12px ' + this.config.font
-			}));
+			var text = new PIXI.Text( textParts.join(' '), {
+				font: '12px ' + this.config.font,
+				fill: 0xFFFFFF
+			});
+
+			var bgPadding = 5;
+
+			var background = new PIXI.Graphics()
+										.beginFill(0x000000, 0.5)
+										.drawRoundedRect(0, 0, text.width + bgPadding * 2, text.height + bgPadding * 2, 5)
+										.endFill();
+
+			this.tempChildren.push(this.chartContainer.addChild(background));
+			this.tempChildren.push(this.chartContainer.addChild(text));
+
+
+			position.x = Math.round(position.x);
+			position.y = Math.round(position.y);
+
 			text.anchor.set(0.5, 0.5);
-			text.position.set(Math.round(position.x), Math.round(position.y));
+			background.position.set(position.x - text.width / 2 - bgPadding, position.y - text.height / 2 - bgPadding);
+			text.position.set(position.x, position.y);
 		},
 
 		_drawLegend: function() {
@@ -154,6 +173,8 @@
 			var title = this.legend.addChild(new PIXI.Text(this.config.legendTitle, {
 				font: '18px Arial'
 			}));
+
+			this.tempChildren.push(title);
 
 			title.anchor.set(0.5, 0);
 			title.x = (this.config.width * (this.config.legendWidth/100)) / 2;
@@ -181,6 +202,9 @@
 				legendLabel = new PIXI.Text(this.labels[key] || key, {
 					font: '12px ' + this.config.font
 				});
+
+				this.tempChildren.push(legendCircle);
+				this.tempChildren.push(legendLabel);
 
 				legendCircle.x = this.config.offset + 9;
 				legendCircle.y = nextY;
@@ -237,7 +261,19 @@
 			return this;
 		},
 
+		clear: function() {
+			this.tempChildren.forEach(function(child) {
+				if (child.parent) {
+					child.parent.removeChild(child);
+				}
+			});
+			this.tempChildren = [];
+			this.chart.clear();
+		},
+
 		redraw: function() {
+			this.clear();
+
 			var total = 0,
 				nextSectorStartAngle = this.config.firstSectorAngle;
 
