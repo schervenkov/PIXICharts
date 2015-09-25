@@ -6,17 +6,19 @@
 		this.config = charts.extend(config || {}, {
 			width: 340,
 			height: 200,
-			autoRedraw: true,
+			autoRedraw: false,
 			showLabels: true,
 			showValues: true,
 			legend: true,
 			firstSectorAngle: 0,
 			backgroundColor: null,
 			legendPosition: 'right',
-			offset: 10,
+			offset: 20,
 			chartTitle: null,
 			legendTitle: null,
 			legendBackgroundColor: 0xAAAAAA,
+			font: 'Arial',
+
 			legendWidth: 40 // percents
 		});
 
@@ -93,26 +95,57 @@
 			return (angle - 90) * PIXI.DEG_TO_RAD;
 		},
 
-		_drawSector: function( startAngle, percent, color ) {
+		_drawSector: function( startAngle, percent, key ) {
 			var endAngle	= 360 * (percent / 100) + startAngle,
-				centerX 	= this.config.position.x,
-				centerY 	= this.config.position.y,
+				center 		= {
+					x: this.config.position.x,
+					y: this.config.position.y
+				},
 				radius		= this.config.radius;
+
+			var labelPosition = {};
+			var middleAngle = (endAngle - startAngle) / 2 + startAngle;
+			var middleRadius = radius / 2;
+
+			labelPosition.x = center.x + middleRadius * Math.cos( this._angle(middleAngle) );
+			labelPosition.y = center.y + middleRadius * Math.sin( this._angle(middleAngle) );
 
 			startAngle = this._angle(startAngle);
 
+			var pointA = {
+				x: center.x + radius * Math.cos( startAngle ),
+				y: center.y + radius * Math.sin( startAngle )
+			};
+
 			this.chart
-					.beginFill(color, 1)
-					.moveTo(centerX, centerY)
-					.lineTo(
-						centerX + radius * Math.cos( startAngle ),
-						centerY + radius * Math.sin( startAngle )
-					)
-					.arc(centerX, centerY, radius, startAngle, this._angle(endAngle), false )
-					.lineTo(centerX, centerY)
+					.beginFill(this.colors[key], 1)
+					.moveTo(center.x, center.y)
+					.lineTo(pointA.x, pointA.y)
+					.arc(center.x, center.y, radius, startAngle, this._angle(endAngle), false )
+					.lineTo(center.x, center.y)
 					.endFill();
 
+			this._drawValue(key, labelPosition);
+
 			return endAngle;
+		},
+
+		// draws the value (if needed) in the center of the three given points
+		_drawValue: function( key, position ) {
+			if (!this.config.showValues && !this.config.showLabels) return;
+			var textParts = [];
+			if (this.config.showLabels) {
+				textParts.push( this.labels[key] ? this.labels[key] : key );
+			}
+			if (this.config.showValues) {
+				textParts.push( this.data[key] );
+			}
+
+			var text = this.chartContainer.addChild(new PIXI.Text( textParts.join(' '), {
+				font: '12px ' + this.config.font
+			}));
+			text.anchor.set(0.5, 0.5);
+			text.position.set(position.x, position.y);
 		},
 
 		setBackgroundColor: function( color ) {
@@ -167,7 +200,7 @@
 				if (!this.colors[key]) {
 					this.setColor(key, this.getColor());
 				}
-				nextSectorStartAngle = this._drawSector(nextSectorStartAngle, (this.data[key] / total) * 100, this.colors[key]);
+				nextSectorStartAngle = this._drawSector(nextSectorStartAngle, (this.data[key] / total) * 100, key);
 			}
 		}
 	});

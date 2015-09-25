@@ -15,7 +15,10 @@
 	(function loop(){ renderer.render(stage); requestAnimationFrame(loop); })();
 
 	var chart = new PIXICharts.Pie({
-		backgroundColor: 0xEEEEEE
+		backgroundColor: 0xEEEEEE,
+		legend: false,
+		height: 340,
+		firstSectorAngle: 20
 	});
 
 	stage.addChild(chart);
@@ -23,9 +26,13 @@
 	chart.position.set(100, 150);
 
 	chart
-		.setData('data1', 20)
-		.setData('data2', 50)
-		.setData('data3', 80);
+		.setLabel('data1', 'Fats:')
+		.setLabel('data2', 'Protein:')
+		.setLabel('data3', 'Carbs:')
+		.setData('data1', 7.8)
+		.setData('data2', 18.4)
+		.setData('data3', 5.1)
+		.redraw();
 </script>
 </body>
 </html>
