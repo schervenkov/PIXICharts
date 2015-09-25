@@ -13,12 +13,12 @@
 			firstSectorAngle: 0,
 			backgroundColor: null,
 			legendPosition: 'right',
-			offset: 20,
+			offset: 10,
 			chartTitle: null,
-			legendTitle: null,
+			legendTitle: 'Legend:',
 			legendBackgroundColor: 0xAAAAAA,
 			font: 'Arial',
-
+			valueFormat: function(val) { return val; },
 			legendWidth: 40 // percents
 		});
 
@@ -138,14 +138,62 @@
 				textParts.push( this.labels[key] ? this.labels[key] : key );
 			}
 			if (this.config.showValues) {
-				textParts.push( this.data[key] );
+				textParts.push( this.config.valueFormat(this.data[key]) );
 			}
 
 			var text = this.chartContainer.addChild(new PIXI.Text( textParts.join(' '), {
 				font: '12px ' + this.config.font
 			}));
 			text.anchor.set(0.5, 0.5);
-			text.position.set(position.x, position.y);
+			text.position.set(Math.round(position.x), Math.round(position.y));
+		},
+
+		_drawLegend: function() {
+			if (!this.config.legend) return;
+
+			var title = this.legend.addChild(new PIXI.Text(this.config.legendTitle, {
+				font: '18px Arial'
+			}));
+
+			title.anchor.set(0.5, 0);
+			title.x = (this.config.width * (this.config.legendWidth/100)) / 2;
+			title.y = this.config.offset;
+
+			var nextY = title.height + this.config.offset + 20;
+
+			var legendCircle, legendLabel;
+
+			var legendLabel = new PIXI.Text('', {
+				font: '12px ' + this.config.font
+			});
+
+			for (var key in this.labels) {
+				if ( !this.data.hasOwnProperty(key) ) continue;
+
+				legendCircle = new PIXI.Graphics()
+											.beginFill( 0xFFFFFF )
+											.drawCircle(0, 0, 9)
+											.endFill()
+											.beginFill( this.colors[key] )
+											.drawCircle(0, 0, 8)
+											.endFill();
+
+				legendLabel = new PIXI.Text(this.labels[key] || key, {
+					font: '12px ' + this.config.font
+				});
+
+				legendCircle.x = this.config.offset + 9;
+				legendCircle.y = nextY;
+
+				legendLabel.anchor.set(0, 0.5);
+				legendLabel.x = this.config.offset + 25;
+				legendLabel.y = nextY;
+
+				nextY += 25;
+
+				this.legend.addChild(legendCircle);
+				this.legend.addChild(legendLabel);
+			}
 		},
 
 		setBackgroundColor: function( color ) {
@@ -180,6 +228,9 @@
 
 		setData: function( key, value ) {
 			this.data[ key ] = value;
+			if (!this.labels[key]) {
+				this.setLabel(key, key);
+			}
 			if ( this.config.autoRedraw ) {
 				this.redraw();
 			}
@@ -202,6 +253,8 @@
 				}
 				nextSectorStartAngle = this._drawSector(nextSectorStartAngle, (this.data[key] / total) * 100, key);
 			}
+
+			this._drawLegend();
 		}
 	});
 

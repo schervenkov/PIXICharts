@@ -16,9 +16,14 @@
 
 	var chart = new PIXICharts.Pie({
 		backgroundColor: 0xEEEEEE,
-		legend: false,
-		height: 340,
-		firstSectorAngle: 20
+		legend: true,
+		showLabels: false,
+		width: 500,
+		height: 300,
+		firstSectorAngle: 20,
+		valueFormat: function( val ) {
+			return val + 'g';
+		}
 	});
 
 	stage.addChild(chart);
@@ -26,9 +31,9 @@
 	chart.position.set(100, 150);
 
 	chart
-		.setLabel('data1', 'Fats:')
-		.setLabel('data2', 'Protein:')
-		.setLabel('data3', 'Carbs:')
+		.setLabel('data1', 'Fats')
+		.setLabel('data3', 'Carbs')
+		.setLabel('data2', 'Protein')
 		.setData('data1', 7.8)
 		.setData('data2', 18.4)
 		.setData('data3', 5.1)
