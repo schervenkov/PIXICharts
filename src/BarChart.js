@@ -35,9 +35,24 @@
 	BarChart.prototype = Object.create( PIXI.Container.prototype );
 
 	charts.extend(BarChart.prototype, {
-		_drawSector: function( xPos, key ) {
-			// this._drawValue(key, labelPosition);
-			// return nextSectorX;
+		_drawSector: function( xPos, maxValue, key ) {
+			var totalSectors = Object.keys(this.data).length;
+			var sectorWidth = (this.config.width - (totalSectors-1)*this.config.offset) / totalSectors;
+
+			var sectorHeight = (this.config.height - this.config.offset) * (this.data[key] / maxValue);
+			var yPos = this.config.height - sectorHeight;
+
+			this.chart
+					.beginFill(this.colors[key])
+					.drawRect(xPos, yPos, sectorWidth, sectorHeight)
+					.endFill();
+
+			this._drawValue(key, {
+				x: xPos + (sectorWidth / 2),
+				y: yPos + (sectorHeight / 2)
+			});
+
+			return xPos + sectorWidth + this.config.offset;
 		},
 
 		// draws the value (if needed) at given point
@@ -87,11 +102,14 @@
 		},
 
 		redraw: function() {
-			var nextSectorX = this.config.offset;
+			var nextSectorX = 0;
+			var maxValue = 0;
 
 			for (var key in this.data) {
 				if ( !this.data.hasOwnProperty(key) ) continue;
-				total += this.data[key];
+				if ( this.data[key] > maxValue ) {
+					maxValue = this.data[key];
+				}
 			}
 
 			for (var key in this.data) {
@@ -99,7 +117,7 @@
 				if (!this.colors[key]) {
 					this.setColor(key, this.getColor());
 				}
-				nextSectorX = this._drawSector(nextSectorX, key);
+				nextSectorX = this._drawSector(nextSectorX, maxValue, key);
 			}
 		}
 	});

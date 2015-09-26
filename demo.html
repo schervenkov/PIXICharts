@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="libs/pixi/pixi.min.js"></script>
 	<script type="text/javascript" src="src/Utils.js"></script>
 	<script type="text/javascript" src="src/PieChart.js"></script>
+	<script type="text/javascript" src="src/BarChart.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -14,18 +15,18 @@
 	var stage = new PIXI.Container();
 	(function loop(){ renderer.render(stage); requestAnimationFrame(loop); })();
 
-	var chart = new PIXICharts.Pie({
+	var myPieChart = new PIXICharts.Pie({
 		backgroundColor: 0xEEEEEE,
 		valueFormat: function( val ) {
 			return val.toFixed(1) + ' g';
 		}
 	});
 
-	stage.addChild(chart);
+	stage.addChild(myPieChart);
 
-	chart.position.set(100, 150);
+	myPieChart.position.set(0, 0);
 
-	chart
+	myPieChart
 		.setLabel('data1', 'Fats')
 		.setLabel('data3', 'Carbs')
 		.setLabel('data2', 'Protein')
@@ -33,6 +34,22 @@
 		.setData('data2', 18.4)
 		.setData('data3', 5.1)
 		.redraw();
+
+	var myBarChart = new PIXICharts.Bar({
+		backgroundColor: 0xEEEEEE
+	});
+
+	myBarChart
+		.setLabel('data1', 'Fats')
+		.setLabel('data3', 'Carbs')
+		.setLabel('data2', 'Protein')
+		.setData('data1', 7.8)
+		.setData('data2', 18.4)
+		.setData('data3', 5.1)
+		.redraw();
+
+	myBarChart.position.set(0, 210);
+	stage.addChild(myBarChart);
 </script>
 </body>
 </html>
