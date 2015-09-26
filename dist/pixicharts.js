@@ -65,7 +65,7 @@ if ( !window.PIXICharts ) window.PIXICharts = {};
 			var totalSectors = Object.keys(this.data).length;
 			var sectorWidth = (this.config.width - (totalSectors-1)*this.config.offset) / totalSectors;
 
-			var sectorHeight = (this.config.height - this.config.offset) * (this.data[key] / maxValue);
+			var sectorHeight = this.config.height * (this.data[key] / maxValue);
 			var yPos = this.config.height - sectorHeight;
 
 			this.chart
