@@ -2,6 +2,9 @@
   "name": "PIXICharts",
   "version": "0.0.1",
   "description": "Chart classes for PIXI.js",
+  "main": [
+	"dist/pixicharts.min.js"
+  ],
   "moduleType": [
     "globals"
   ],
