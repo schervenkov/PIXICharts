@@ -8,7 +8,7 @@ Installation:
 
 then include the script:
 
-    <script src="bower_components/pixicharts/pixicharts.min.js"></script>
+    <script src="bower_components/pixicharts/dist/pixicharts.min.js"></script>
 
 Every PIXICharts class extends PIXI.Container, so it can be added as a child of another PIXI.Container.
 

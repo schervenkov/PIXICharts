@@ -16,13 +16,8 @@
 
 	var chart = new PIXICharts.Pie({
 		backgroundColor: 0xEEEEEE,
-		legend: true,
-		showLabels: false,
-		width: 500,
-		height: 300,
-		firstSectorAngle: 20,
 		valueFormat: function( val ) {
-			return val.toFixed(2) + ' g';
+			return val.toFixed(1) + ' g';
 		}
 	});
 
