@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pixicharts by chalgoman</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pixicharts</h1>
+        <p>PIXI.js chart classes.</p>
+
+        <p class="view"><a href="https://github.com/chalgoman/PIXICharts">View the Project on GitHub <small>chalgoman/PIXICharts</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/chalgoman/PIXICharts/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/chalgoman/PIXICharts/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/chalgoman/PIXICharts">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="pixicharts" class="anchor" href="#pixicharts" aria-hidden="true"><span class="octicon octicon-link"></span></a>PIXICharts</h1>
+
+<p><strong><em>WARNING: The package is in development and the documentation is still incomplete.</em></strong></p>
+
+<p>Installation:</p>
+
+<pre><code>bower install pixicharts --save
+</code></pre>
+
+<p>then include the script:</p>
+
+<pre><code>&lt;script src="bower_components/pixicharts/dist/pixicharts.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Every PIXICharts class extends PIXI.Container, so it can be added as a child of another PIXI.Container.</p>
+
+<p><a href="http://chervenkovdev.com/projects/PIXICharts/demo.html">DEMO</a></p>
+
+<h2>
+<a id="piechart" class="anchor" href="#piechart" aria-hidden="true"><span class="octicon octicon-link"></span></a>PieChart</h2>
+
+<pre><code>var myChart = new PIXICharts.Pie( [options] );
+</code></pre>
+
+<p>where options is object with following keys:</p>
+
+<p><strong>width</strong> - the width of the chart </p>
+
+<p><strong>height</strong> - the height of the chart</p>
+
+<p><strong>autoRedraw</strong> - if this is set to <strong>true</strong>, the chart will automatically redraw on each data change. Otherwise, you will have to manually call the <em>myChart.redraw()</em> method. It would be usefull to turn autoRedraw off when there will be animations on chart redraw (not supported for now).</p>
+
+<p><strong>showLabels</strong> - display data labels in chart tooltips.</p>
+
+<p><strong>showValues</strong> - display data values in chart tooltips.</p>
+
+<p><strong>legend</strong> - display legend panel.</p>
+
+<p><strong>firstSectorAngle</strong> - the angle of which starts the first chart sector.</p>
+
+<p><strong>backgroundColor</strong> - background color of the chart</p>
+
+<p><strong>legendPosition</strong> - The position of the legend relative to the chart. Possible values are 'left' or 'right'. Only used if legend=true.</p>
+
+<p><strong>offset</strong> - chart offset when the chart is automatically positioned.</p>
+
+<p><strong>chartTitle</strong> - the title of the chart.</p>
+
+<p><strong>chartTitle</strong> - the title of the chart.</p>
+
+<p><strong>legendTitle</strong> - the title of the legend.</p>
+
+<p><strong>legendBackgroundColor</strong> - the background color of the legend.</p>
+
+<p><strong>font</strong> - the font family used in the chart tooltips and legend.</p>
+
+<p><strong>valueFormat</strong> - a function used to format the value displayed in the tooltips.</p>
+
+<p><strong>legendWidth</strong> - width of the legend in % of total chart width.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/chalgoman">chalgoman</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
