@@ -12,6 +12,8 @@ then include the script:
 
 Every PIXICharts class extends PIXI.Container, so it can be added as a child of another PIXI.Container.
 
+[DEMO](http://chervenkovdev.com/projects/PIXICharts/demo.html)
+
 ## PieChart
 
     var myChart = new PIXICharts.Pie( [options] );
