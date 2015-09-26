@@ -36,7 +36,10 @@
 		.redraw();
 
 	var myBarChart = new PIXICharts.Bar({
-		backgroundColor: 0xEEEEEE
+		backgroundColor: 0xEEEEEE,
+		valueFormat: function( val ) {
+			return val.toFixed(1) + ' g';
+		}
 	});
 
 	myBarChart
